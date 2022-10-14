@@ -126,18 +126,28 @@
             proposition =proposition.concat(input3.value)
             proposition = proposition.toUpperCase()
         }
+        
         e.preventDefault();
-        if(max_essai <3){
-            essais += 1
-            max_essai+=1
- 
-            generate_table(proposition)
-        }
+        
+            
+            if(proposition==mot){
+                score+=1
+                essais += 1
+                max_essai =6
+                alert("Vous avez gagné")
+            }
+            else{   
+                if(max_essai<6){
+                essais += 1
+                max_essai+=1
+                generate_table(proposition)
+            }
+            }
         
         vider(taille)
         console.log(max_essai) 
         $.get('/sendUser', function(data) {
-        fetch('http://localhost:5000/setScore/?username='+data.userName  + '&score=' + essais)
+        fetch('http://localhost:5000/setScore/?username='+data.userName  + '&score=' + score + '&essai=' + essais)
         })
         console.log(essais) 
         });
@@ -200,7 +210,9 @@
             tblbody.appendChild(row)
             tbl.appendChild(tblbody)
             document.getElementById("sutom").appendChild(tbl) 
-            tbl.setAttribute("border", "1")            
+            tbl.setAttribute("border", "1")   
+            
+           
         }
     }
     

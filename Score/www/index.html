@@ -1,26 +1,19 @@
 <head>
  
-    <!-- CSS Reset -->
-    <link rel="stylesheet" href="/css/normalize.css">
-    <!-- Milligram CSS -->
-    <link rel="stylesheet" href="/css/milligram.css">
+     <!-- Milligram CSS -->
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/milligram.css">
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="/css/index.css">
     
     <!-- Jquery -->
     <script src="/jquery-3.6.0.js"></script>
-<style>
-    body {
-        background-color: #ffd358;
-        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-        font-size: 20px;
-        margin: 0;
 
-    }
-</style>
 </head>
 <body style="font-size:45px">
-    <div class="container">
-        <div class="row">
-            <div class="column"><h1>MY SUTOM APP</h1></div>
+    <div class="contenu">
+        <div >
+            <div ><h1>MY SUTOM APP</h1></div>
         </div>
 
         <div>
@@ -46,6 +39,15 @@
     </div>
 </body>
 <script>
-     document.getElementById("score").innerHTML = localStorage.getItem("score")
-     document.getElementById("essais").innerHTML = localStorage.getItem("essai")
+var score=0
+var essai=0
+    $.get( '/score', function( data ){
+    score = data
+    document.getElementById("score").innerHTML = score
+    });
+   
+    $.get( '/essai', function( data ){
+    essai = data
+    document.getElementById("essais").innerHTML = essai
+    });
 </script>

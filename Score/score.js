@@ -1,16 +1,16 @@
 const express = require('express')
 const app = express()
 const port = 5000
-var fs = require('fs');
+const fs = require('fs');
 var scores= require('./model/score.json')
 var present =0
-
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+var score=0
+var essai=0
 
 
-//console.log(scores)
+
+app.use(express.static('www'));
+
 
 app.get('/getScore', (req,res)=>{
  // console.log(req.body)
@@ -24,24 +24,19 @@ app.get('/setScore', (req,res)=>{
     for (i=0; i <scores.length;i++) {
         if(scores[i]["username"]== req.query.username) 
         {
-            //scores[i]["score"]=req.query.score
-            scores[i]["score"]=20
+            scores[i]["score"]=req.query.score
+            score=req.query.score
+            essai=req.query.essai
             present=present + 1
             console.log("b"+present)
         }
     }
     
-    //add a new user and score in the database
-    /*
-    var data = fs.readFileSync("./model/score.json");
-    var myObject = JSON.parse(data);
-      
-    myObject.push(req.query);
-    var newData2 = JSON.stringify(myObject);
-    */
+   
     if(present == 0) {
         console.log("a")
-       
+        score=req.query.score
+        essai=req.query.essai
         scores.push(req.query);
     
         
@@ -51,20 +46,19 @@ app.get('/setScore', (req,res)=>{
     console.log(scores)
 
     //write file
-    fs.writeFileSync('./model/score.json', JSON.stringify(scores));
-    console.log("New data added");
-    /*
-    fs.writeFile("./model/score.json", JSON.stringify(scores), (err) => {
-          
-        if (err) throw err;
-        console.log("New data added");
+   fs.writeFileSync('./model/score.json', JSON.stringify(scores));
+     
+        
     });
-  */
+ 
+app.get('/score', (req, res) => {
+  res.send(score)
+});
 
-   
-  
-})
+app.get('/essai', (req, res) => {
+  res.send(essai)
+});
 
 app.listen(port, () => {
   console.log(`le serveur score tourne sur le port ${port}`)
-})
+});

@@ -17,8 +17,6 @@ var fs = require("fs")
 text_francais = fs.readFileSync("data/liste_francais_utf8.txt", "utf8")
 text = text_francais.toString().split('\r\n')
 
-// express session
-
 
 app.set('trust proxy', 1) // trust first proxy
 app.use(sessions({
@@ -62,15 +60,6 @@ app.use(function (req, res, next){
 })
 
 app.use(express.static('www'));
-
-
-
-
-
-
-
-
-
 
 var bodyParser = require('body-parser')
 app.use( bodyParser.json() );       //to support JSON-encoded bodies
