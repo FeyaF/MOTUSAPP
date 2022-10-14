@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <meta charset="utf-8">
+    <title>SUTOM</title>
+    <style>
+    body {
+        background-color: #ffd358;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: 20px;
+        margin: 0;
+
+    }
+
+    h1 {
+        color: #265faa;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+
+    #global {
+        margin-left: auto;
+        margin-right: auto;
+        width: 60%; /* largeur obligatoire pour être centré */
+    }
+
+    input[type=text] {
+        font-size: 25px;
+        width: 7%;
+        display: inline;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        text-transform: uppercase;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+
+    input[type=text]:focus {
+        border: 3px solid #555;
+    }
+    
+    input[type=submit]{
+        background-color: rgb(205, 52, 6);
+        color: white;
+        font-size: 25px;
+        border: 3px solid rgb(186, 137, 137);
+        border-radius: 4px;
+        padding: 14px 20px;
+        margin: 8px 0;
+        margin-left: 10px;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+
+    table{
+        
+        margin-left: 8px ;
+        margin-right: auto;
+        width: 50%; 
+        border:2px solid
+    }
+
+    tr{
+        size: 3px;
+    }
+    td {
+      border:  1px solid;
+      padding: 10px;
+      max-width: 5px;
+      background: white;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    </style>
+    <!-- Jquery -->
+       
+    <!-- CSS only --> 
+    <script src="/jquery-3.6.0.js"></script>
+
+</head>
+
+<body>
+
+
+    <div id="global">
+    
+        <h1>MY SUTOM APP</h1>
+        <div id="formulaire"></div>
+        <div id="sutom">
+
+        </div>  
+    </div>
+   
+         
+
+</body>
+<script>
+
+ 
+
+
+    var mot = ""
+    var taille 
+    var proposition=""
+    var score = 0
+    var essais = 0
+    var max_essai = 0
+    
+
+    $.get( '/mot', function( data ){
+        mot = data.trim().toUpperCase()
+        taille = mot.length
+        var x=0
+        console.log(mot)
+        console.log(taille)
+        formulaire(taille)
+        $("form").on("submit", function (e) {
+        if(proposition.length == taille){
+            proposition =""
+        }
+        var input2 = document.getElementById("letter0")
+        proposition =proposition.concat(input2.value)
+        console.log(input2.value)
+        for(var i=1 ;i<taille;i++){   
+            var input3 = document.getElementById("letter"+i)
+            proposition =proposition.concat(input3.value)
+            proposition = proposition.toUpperCase()
+        }
+        e.preventDefault();
+        if(max_essai <3){
+            essais += 1
+            max_essai+=1
+ 
+            generate_table(proposition)
+        }
+        
+        vider(taille)
+        console.log(max_essai) 
+        $.get('/sendUser', function(data) {
+        fetch('http://localhost:5000/setScore/?username='+data.userName  + '&score=' + essais)
+        })
+        console.log(essais) 
+        });
+       
+    });
+
+    function formulaire(x) {
+        
+        var form = document.createElement("form")
+        var input1 = document.createElement("input")
+        input1.setAttribute("type", "text");
+        input1.maxLength ="1"
+        input1.id = "letter0"
+        input1.value = mot[0]
+        console.log(input1.value)
+        form.appendChild(input1)
+        for(var j=1 ; j<x ;j++){
+            var input = document.createElement("input")
+            input.setAttribute("type", "text");
+            input.maxLength ="1"
+            input.id = "letter"+j
+            input.focus()
+            console.log(input.value)
+            form.appendChild(input)
+        }    
+        var submit = document.createElement("input")
+        submit.setAttribute("type", "submit");
+        submit.setAttribute("value", "Envoyer");
+        form.appendChild(submit)
+        document.getElementById("formulaire").appendChild(form)   
+        
+
+    }
+
+    function generate_table(prop){
+        console.log("hello")
+        console.log(proposition)
+        if(prop.length != mot.length){
+            alert("incorrect word length")
+        }
+        else {        
+            var tbl = document.createElement("table")
+            var tblbody = document.createElement ("tbody")
+            var row = document.createElement("tr")
+                for(var j=0 ; j<taille ;j++){
+                    var cell = document.createElement("td")
+                    var cellText = document.createTextNode(prop[j])
+                    cell.appendChild(cellText)
+                    if(prop[j]==mot[j]){
+                        cell.style.backgroundColor = "green"
+                    }
+                    else if(mot.split('').includes(prop[j])){
+                        cell.style.backgroundColor = "orange"
+                    }
+                    else {
+                        cell.style.backgroundColor = "red"
+                    }
+                    row.appendChild(cell)         
+                }
+            tblbody.appendChild(row)
+            tbl.appendChild(tblbody)
+            document.getElementById("sutom").appendChild(tbl) 
+            tbl.setAttribute("border", "1")            
+        }
+    }
+    
+function suivant(enCours, suivant, limite){
+    if (enCours.value.length == limite)
+    document.code[suivant].focus();
+}
+
+function vider(x){
+   
+    for(var i=1 ;i<x;i++){
+
+        var input3 = document.getElementById("letter"+i)
+        input3.value=""
+        
+    }
+}
+
+
+
+  
+</script>
+
+
+</html>

@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  sutomapp:
+    build:
+      context: SutomApp/
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+  auth:
+    build:
+      context: Auth/
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+  score:
+    build:
+      context: Score/
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    
+    
+    
+
+ 
+      

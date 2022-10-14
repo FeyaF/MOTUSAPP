@@ -1,0 +1,31 @@
+body{
+    margin : 0px;
+    padding : 0px;
+
+}
+.header{
+    background-color: #265faa;
+    height : 100px;
+    margin : 10px
+
+}
+nav ul li{
+    list-style-type: none ;
+    display: inline-block;
+    padding : 40px;
+}
+ul li a{
+    color : rgb(236, 202, 8);
+    letter-spacing: 0.1rem;
+}
+ul li a :hover{
+    color : #ffd358;
+    text-decoration : underline;
+}
+.accueuil li{
+    float : left;
+    padding : 15px;
+}
+.accueil li a{
+    text-decoration: none;
+}
